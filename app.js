@@ -1,0 +1,1 @@
+fetch('https://gabrielvazquezprofe.page.gd/').then((res) => res.json()).then((data) => console.log(data));
