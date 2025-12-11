@@ -1,23 +1,19 @@
 <?php
 // api_peliculas.php
-ob_clean();
 // Configuración de cabeceras para CORS y JSON
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Si el método de la solicitud es OPTIONS, solo enviamos las cabeceras CORS y salimos.
 if ($method === 'OPTIONS') {
-    // Las cabeceras ya se enviaron arriba.
     http_response_code(200);
-    exit(); // Detiene la ejecución aquí. El navegador ya tiene permiso.
+    exit();
 }
-
-// 3. Cabecera de contenido para las respuestas reales (GET/POST)
-header("Content-Type: application/json; charset=UTF-8");
 
 $peliculas = [
     [
@@ -891,7 +887,7 @@ if ($method === 'GET') {
     $data = json_decode($input, true);
 
     if (json_last_error() !== JSON_ERROR_NONE) {
-        http_response_code(400); // Bad Request
+        http_response_code(400);
         echo json_encode([
             "success" => false,
             "message" => "Invalid JSON payload.",
@@ -900,24 +896,21 @@ if ($method === 'GET') {
         exit();
     }
 
-    // Here you would typically process the $data, e.g., save it to a database
-    // For this example, we just echo it back.
     $respuesta = [
         "success" => true,
         "message" => "Película recibida correctamente (simulación de creación)",
         "data_received" => $data
     ];
 
-    http_response_code(201); // Created
+    http_response_code(201);
     echo json_encode($respuesta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 } else {
-    http_response_code(405); // Method Not Allowed
+    http_response_code(405);
     echo json_encode([
         "success" => false,
-        "message" => "Method Not Allowed. Supported methods are GET and POST."
+        "message" => "Método no permitido. Métodos permitidos: GET y POST."
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     exit();
 }
-
 
